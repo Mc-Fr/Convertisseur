@@ -6,16 +6,15 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import net.mcfr.AllTests;
 import net.mcfr.util.BlockId;
 
 public class ReplacerTest {
-  private static final String PATH = "C:\\Users\\Darmo\\Darmo\\Programmation\\Java\\MCFR\\trunk\\Map_Converter\\res\\altria\\";
-
   private static Replacer replacer;
 
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
-    replacer = new Replacer("C:\\Users\\Darmo\\Darmo\\Programmation\\Java\\MCFR\\trunk\\Map_Converter\\res\\test.cfg", PATH);
+    replacer = new Replacer(AllTests.DATA_PATH, AllTests.MAP_PATH);
   }
 
   private byte[] ids, add, meta;

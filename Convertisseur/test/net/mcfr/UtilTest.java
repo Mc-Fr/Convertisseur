@@ -11,17 +11,15 @@ import net.mcfr.util.BlockId;
 import net.mcfr.util.Util;
 
 public class UtilTest {
-  private static final String PATH = "C:\\Users\\Darmo\\Darmo\\Programmation\\Java\\MCFR\\trunk\\Map_Converter\\res\\altria\\";
-
   private Map<Integer, String> idsToNames;
   private Map<String, Integer> namesToIds;
   private Map<BlockId, BlockId> ids;
 
   @Before
   public void setUp() throws Exception {
-    this.idsToNames = Util.getIdsToNamesTable(PATH);
-    this.namesToIds = Util.getNamesToIdsTable(PATH);
-    this.ids = Util.getIdsTable("C:\\Users\\Darmo\\Darmo\\Programmation\\Java\\MCFR\\trunk\\Map_Converter\\res\\test.cfg", PATH);
+    this.idsToNames = Util.getIdsToNamesTable(AllTests.MAP_PATH);
+    this.namesToIds = Util.getNamesToIdsTable(AllTests.MAP_PATH);
+    this.ids = Util.getIdsTable(AllTests.DATA_PATH, AllTests.MAP_PATH);
   }
 
   @Test
