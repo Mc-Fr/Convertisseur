@@ -14,7 +14,6 @@ import net.mcfr.minecraft.nbt.NBTTagCompound;
 import net.mcfr.minecraft.nbt.NBTTagList;
 import net.mcfr.replacer.Replacer;
 import net.mcfr.util.BlockId;
-import net.mcfr.util.Logger;
 import net.mcfr.util.Util;
 
 /**
@@ -23,8 +22,6 @@ import net.mcfr.util.Util;
  * @author Mc-Fr
  */
 class RegionsConverterThread extends Thread {
-  private static final Logger LOGGER = Logger.getLogger();
-
   /** Le largeur d'une région en nombre de chunks. */
   private static final int REGION_SIZE = 32;
 
@@ -64,7 +61,8 @@ class RegionsConverterThread extends Thread {
             chunk = CompressedStreamTools.read(in);
           }
           catch (IOException e) {
-            LOGGER.warning(String.format("Erreur lors de la lecture du chunk [%d, %d]@(%d, %d)", regionCoordinate.x, regionCoordinate.y, chunkX, chunkY));
+            System.out.println(
+                String.format("Erreur lors de la lecture du chunk [%d, %d]@(%d, %d)", regionCoordinate.x, regionCoordinate.y, chunkX, chunkY));
             continue;
           }
 
@@ -87,7 +85,8 @@ class RegionsConverterThread extends Thread {
             byte[] data = section.getByteArray("Data");
 
             if (blocks.length == 0 || data.length == 0) {
-              LOGGER.warning(String.format("Section vide [%d, %d]@(%d, %d)@%d, ce n'est pas normal !", regionCoordinate.x, regionCoordinate.y, chunkX, chunkY, i));
+              System.out.println(String.format("Section vide [%d, %d]@(%d, %d)@%d, ce n'est pas normal !", regionCoordinate.x, regionCoordinate.y,
+                  chunkX, chunkY, i));
               continue;
             }
 
@@ -112,7 +111,8 @@ class RegionsConverterThread extends Thread {
               CompressedStreamTools.write(chunk, out);
             }
             catch (IOException e) {
-              LOGGER.warning(String.format("Erreur lors de l'écriture du chunk [%d, %d]@(%d, %d)", regionCoordinate.x, regionCoordinate.y, chunkX, chunkY));
+              System.out.println(
+                  String.format("Erreur lors de l'écriture du chunk [%d, %d]@(%d, %d)", regionCoordinate.x, regionCoordinate.y, chunkX, chunkY));
               continue;
             }
           }
@@ -141,23 +141,15 @@ class RegionsConverterThread extends Thread {
         if (blocks[i] != 0) {
           if (i % 256 == 0)
             fw.write("------------\n");
-          // @f0
-          fw.write(String.format(
-            "%d:\tBlock:\t%d\t(ID: %d, Add: %d); Data:\t%d;\t(%d,\t%d,\t%d); %s %s\n",
-            i / 2,
-            Util.getId(blocks, add, i),
-            Byte.toUnsignedInt(blocks[i]),
-            Util.extractHalfByte(add, i),
-            Util.extractHalfByte(data, i),
-            i % 16, i / 256, (i / 16) % 16,
-            String.format("%8s", Integer.toBinaryString(Byte.toUnsignedInt(data[i / 2]))).replace(' ', '0'),
-            String.format("%8s", Integer.toBinaryString(Byte.toUnsignedInt(add[i / 2]))).replace(' ', '0')));
-          // @f1
+          fw.write(String.format("%d:\tBlock:\t%d\t(ID: %d, Add: %d); Data:\t%d;\t(%d,\t%d,\t%d); %s %s\n", i / 2, Util.getId(blocks, add, i),
+              Byte.toUnsignedInt(blocks[i]), Util.extractHalfByte(add, i), Util.extractHalfByte(data, i), i % 16, i / 256, (i / 16) % 16,
+              String.format("%8s", Integer.toBinaryString(Byte.toUnsignedInt(data[i / 2]))).replace(' ', '0'),
+              String.format("%8s", Integer.toBinaryString(Byte.toUnsignedInt(add[i / 2]))).replace(' ', '0')));
         }
       }
     }
     catch (IOException e) {
-      LOGGER.severe("L'écriture du log a échoué");
+      System.out.println("L'écriture du log a échoué");
     }
   }
 }

@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 
 import net.mcfr.replacer.AltriaUpdateReplacer;
 import net.mcfr.replacer.Replacer;
-import net.mcfr.util.Logger;
 
 /**
  * Convertisseur de carte.
@@ -22,8 +21,6 @@ import net.mcfr.util.Logger;
  * @author Mc-Fr
  */
 public class MapConverter {
-  private static final Logger LOGGER = Logger.getLogger();
-
   public static final String VERSION = "1.2.1";
   /** Le chemin vers les fichiers de config pour le debug. */
   public static final String DEBUG_DIR = "C:\\Users\\Darmo\\Darmo\\Programmation\\Java\\MCFR\\trunk\\Map_Converter\\res\\";
@@ -75,14 +72,14 @@ public class MapConverter {
    */
   public void convert() {
     if (MapConverter.READ_ONLY)
-      LOGGER.warning("Attention : le mode lecture seule est activé, les changement seront ignorés !");
+      System.out.println("Attention : le mode lecture seule est activé, les changement seront ignorés !");
 
     File dir = new File(getRegionDirectory());
     this.progress = 0;
     this.started = true;
     this.startTime = System.currentTimeMillis();
 
-    LOGGER.info(String.format("Conversion de la carte '%s' en cours...", dir.getName()));
+    System.out.println(String.format("Conversion de la carte '%s' en cours...", dir.getName()));
     this.threads.forEach(thread -> thread.start());
   }
 
@@ -104,7 +101,7 @@ public class MapConverter {
    * Met à jour et affiche la progression de la conversion.
    */
   public synchronized void updateProgress() {
-    LOGGER.info(String.format(Locale.ENGLISH, "Progression : %.2f%%", ((float) ++this.progress / this.filesNumber) * 100));
+    System.out.println(String.format(Locale.ENGLISH, "Progression : %.2f%%", ((float) ++this.progress / this.filesNumber) * 100));
   }
 
   /**
@@ -137,13 +134,13 @@ public class MapConverter {
 
       if (this.threads.isEmpty()) {
         if (hours != 0)
-          LOGGER.info(String.format("Terminé en %d h %d min %d.%d s.", hours, minutes, seconds, mseconds));
+          System.out.println(String.format("Terminé en %d h %d min %d.%d s.", hours, minutes, seconds, mseconds));
         else if (minutes != 0)
-          LOGGER.info(String.format("Terminé en %d min %d.%d s.", minutes, seconds, mseconds));
+          System.out.println(String.format("Terminé en %d min %d.%d s.", minutes, seconds, mseconds));
         else if (seconds != 0)
-          LOGGER.info(String.format("Terminé en %d.%d s.", seconds, mseconds));
+          System.out.println(String.format("Terminé en %d.%d s.", seconds, mseconds));
         else
-          LOGGER.info(String.format("Terminé en %d ms.", mseconds));
+          System.out.println(String.format("Terminé en %d ms.", mseconds));
       }
     }
   }

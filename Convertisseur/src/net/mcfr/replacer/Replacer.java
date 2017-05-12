@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.util.Map;
 
 import net.mcfr.util.BlockId;
-import net.mcfr.util.Logger;
 import net.mcfr.util.Util;
 
 /**
@@ -15,8 +14,6 @@ import net.mcfr.util.Util;
  * @author Mc-Fr
  */
 public class Replacer {
-  private static final Logger LOGGER = Logger.getLogger();
-
   /** Une table associant les anciens ID aux nouveaux. */
   private final Map<BlockId, BlockId> idsTable;
 
@@ -29,9 +26,9 @@ public class Replacer {
    * @throws ParseException si une erreur de syntaxe a été rencontrée
    */
   public Replacer(String configPath, String levelDataPath) throws IOException, ParseException {
-    LOGGER.info("Génération de la table des ID...");
+    System.out.println("Génération de la table des ID...");
     this.idsTable = Util.getIdsTable(configPath, levelDataPath);
-    LOGGER.info("Fait.");
+    System.out.println("Fait.");
   }
 
   /**

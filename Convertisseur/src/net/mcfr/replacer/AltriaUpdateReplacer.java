@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.util.Map;
 
 import net.mcfr.util.BlockId;
-import net.mcfr.util.Logger;
 import net.mcfr.util.Util;
 
 /**
@@ -14,8 +13,6 @@ import net.mcfr.util.Util;
  * @author Mc-Fr
  */
 public class AltriaUpdateReplacer extends Replacer {
-  private static final Logger LOGGER = Logger.getLogger();
-
   /** Ue table contenant associant les ID à leur nom. */
   private final Map<Integer, String> idsToName;
 
@@ -29,9 +26,9 @@ public class AltriaUpdateReplacer extends Replacer {
    */
   public AltriaUpdateReplacer(String configPath, String levelDataPath) throws IOException, ParseException {
     super(configPath, levelDataPath);
-    LOGGER.info("Génération de l'index ID/noms...");
+    System.out.println("Génération de l'index ID/noms...");
     this.idsToName = Util.getIdsToNamesTable(levelDataPath);
-    LOGGER.info("Fait.");
+    System.out.println("Fait.");
   }
 
   /**

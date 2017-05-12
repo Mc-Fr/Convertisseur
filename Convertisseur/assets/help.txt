@@ -1,0 +1,35 @@
+ARGUMENTS
+
+  {-c <chemin_vers_region> <chemin_vers_config> [-a]|-f <chemin_vers_region>|-h}
+
+OPTIONS
+
+  -c <chemin_vers_region> <chemin_vers_config> [-a]
+    <chemin_vers_region> chemin vers le dossier contenant le dossier region ;
+    <chemin_vers_config> chemin vers le fichier de config ;
+    -a (facultatif) si renseignée, des règles supplémentaires sont ajoutées pour
+        la conversion des cartes d'Altria
+
+    La conversion est effectuée à partir des ID définis dans le fichier
+    'level.dat' de la carte à convertir.
+    N.B. : Si la carte n'a pas été chargée avec Forge, la conversion ne sera pas
+    possible si le fichier de config utilise des ID litéraux
+    (ex. : minecraft:stone).
+
+    Procédure :
+    - Récupérer le fichier 'ids.cfg'
+    - Indiquer le chemin vers le monde à convertir (le dossier doit contenir le
+      dossier 'region' et le fichier 'level.dat' contenant les nouveaux ID)
+    - Indiquer le chemin vers le fichier de config 'ids.cfg' (sans ajouter le
+      nom du fichier !)
+    - Ajouter l'option -a si la carte à convertir fait partie de la version
+      d'Altria du serveur
+    - Valider
+
+  -f
+    <chemin_vers_region> chemin vers le dossier contenant le dossier region
+
+    TODO
+
+  -h
+    Affiche cette aide
