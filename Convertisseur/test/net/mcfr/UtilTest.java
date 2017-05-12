@@ -17,8 +17,8 @@ public class UtilTest {
 
   @Before
   public void setUp() throws Exception {
-    this.idsToNames = Util.getIdsToNamesTable(AllTests.MAP_PATH);
-    this.namesToIds = Util.getNamesToIdsTable(AllTests.MAP_PATH);
+    this.idsToNames = Util.getBlocksIdsToNamesTable(AllTests.MAP_PATH);
+    this.namesToIds = Util.getBlocksNamesToIdsTable(AllTests.MAP_PATH);
     this.ids = Util.getIdsTable(AllTests.DATA_PATH, AllTests.MAP_PATH);
   }
 

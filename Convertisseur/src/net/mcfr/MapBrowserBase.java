@@ -1,54 +1,36 @@
-package net.mcfr.converter;
+package net.mcfr;
 
 import java.awt.Point;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.mcfr.replacer.AltriaUpdateReplacer;
-import net.mcfr.replacer.Replacer;
-
-/**
- * Convertisseur de carte.
- * 
- * @author Mc-Fr
- */
-public class MapConverter {
-  public static final String VERSION = "1.2.1";
-  /** Le chemin vers les fichiers de config pour le debug. */
-  public static final String DEBUG_DIR = "C:\\Users\\Darmo\\Darmo\\Programmation\\Java\\MCFR\\trunk\\Map_Converter\\res\\";
-  /** Constante magique pour le debug empêchant l'écriture des fichiers. */
-  public static final boolean READ_ONLY = false;
+public abstract class MapBrowserBase {
   /** Mode debug. */
   public static final boolean DEBUG = false;
 
   private final String regionDirectory;
   private final Stack<Point> regionsCoordinates;
   private final int filesNumber;
-  private final Stack<Thread> threads;
+  protected final Stack<Thread> threads;
   private int progress;
   private boolean started;
   private long startTime;
   private boolean interrupted;
 
   /**
-   * Crée un convertisseur pour la carte donnée.
+   * Crée un navigateur pour la carte donnée.
    * 
    * @param regionDirectory le chemin vers le dossier region (contient aussi le fichier level.dat)
-   * @param configFilePath le chemin du fichier de config
-   * @param isAltria indique si la carte fait partie d'Altria
    * @param threadsNb le nombre de threads
    * @throws IOException si une erreur de lecture/écriture est survenue
-   * @throws ParseException si une erreur de syntaxe a été rencontrée dans le fichier de config
    */
-  public MapConverter(String regionDirectory, String configFilePath, boolean isAltria, int threadsNb) throws IOException, ParseException {
+  public MapBrowserBase(String regionDirectory, int threadsNb) throws IOException {
     this.regionDirectory = regionDirectory;
     this.regionsCoordinates = getRegionsCoordinates();
     this.filesNumber = this.regionsCoordinates.size();
@@ -57,29 +39,13 @@ public class MapConverter {
     this.started = false;
     this.startTime = 0;
     this.interrupted = false;
-
-    String configFile = configFilePath + "ids.cfg";
-    Replacer replacer = isAltria ? new AltriaUpdateReplacer(configFile, this.regionDirectory) : new Replacer(configFile, this.regionDirectory);
-    for (int i = 0; i < threadsNb; i++)
-      this.threads.push(new RegionsConverterThread(this, replacer));
   }
 
-  /**
-   * Convertit la carte.
-   * 
-   * @throws IOException si une erreur de lecture est survenue
-   * @throws ParseException si une erreur de syntaxe a été rencontrée dans le fichier de config
-   */
-  public void convert() {
-    if (MapConverter.READ_ONLY)
-      System.out.println("Attention : le mode lecture seule est activé, les changement seront ignorés !");
-
-    File dir = new File(getRegionDirectory());
+  public void start() {
     this.progress = 0;
     this.started = true;
     this.startTime = System.currentTimeMillis();
 
-    System.out.println(String.format("Conversion de la carte '%s' en cours...", dir.getName()));
     this.threads.forEach(thread -> thread.start());
   }
 
@@ -101,7 +67,7 @@ public class MapConverter {
    * Met à jour et affiche la progression de la conversion.
    */
   public synchronized void updateProgress() {
-    System.out.println(String.format(Locale.ENGLISH, "Progression : %.2f%%", ((float) ++this.progress / this.filesNumber) * 100));
+    System.out.format(Locale.ENGLISH, "Progression : %.2f%%\n", ((float) ++this.progress / this.filesNumber) * 100);
   }
 
   /**

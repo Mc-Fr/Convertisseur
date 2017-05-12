@@ -27,7 +27,7 @@ public class AltriaUpdateReplacer extends Replacer {
   public AltriaUpdateReplacer(String configPath, String levelDataPath) throws IOException, ParseException {
     super(configPath, levelDataPath);
     System.out.println("Génération de l'index ID/noms...");
-    this.idsToName = Util.getIdsToNamesTable(levelDataPath);
+    this.idsToName = Util.getBlocksIdsToNamesTable(levelDataPath);
     System.out.println("Fait.");
   }
 
