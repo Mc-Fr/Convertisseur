@@ -37,13 +37,15 @@ public class Start {
     System.out.println(str);
     System.out.println(version);
     System.out.println(str);
+    System.out.println("Taper 'exit' ou 'quit' pour quitter.");
 
     Pattern p = Pattern.compile("(\\w+:\\w+)/(-1|\\d+)");
     String input = null;
 
-    while (!"exit".equals(input) || "quit".equals(input)) {
-      System.out.println("ID de l'item/bloc à rechercher :");
-      System.out.print("> ");
+    while (!"exit".equals(input) && !"quit".equals(input)) {
+      System.out.println();
+      System.out.println("ID de l'item/bloc à rechercher (domaine:id/metadata) :");
+      System.out.print("?> ");
       input = IN.nextLine();
       Matcher m = p.matcher(input);
 
@@ -63,7 +65,8 @@ public class Start {
           Finder finder = new Finder(regionDirectory, id, meta, isBlock, 4);
           finder.start();
           while (!finder.isFinished());
-          System.out.println(String.format("Positions pour %s/%d :", id, meta));
+          // FIXME affichage cassé
+          System.out.format("Positions trouvées pour %s/%d :\n", id, meta);
           finder.getPositions().forEach(System.out::println);
         }
         catch (IOException e) {

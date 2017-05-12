@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import net.mcfr.BrowserThreadBase;
+import net.mcfr.minecraft.nbt.NBTBase;
 import net.mcfr.minecraft.nbt.NBTTagCompound;
 import net.mcfr.minecraft.nbt.NBTTagList;
 import net.mcfr.util.BlockId;
@@ -23,8 +24,25 @@ public class FinderThread extends BrowserThreadBase<Finder> {
 
   @Override
   protected void handleTileEntities(NBTTagCompound level, NBTTagList tileEntities) {
-    // TODO
-    // Les coordonnées sont stockées dans chaque TE
+    for (int i = 0; i < tileEntities.tagCount(); i++) {
+      NBTTagCompound te = tileEntities.getCompoundTagAt(i);
+
+      if (te.hasKey("Items")) {
+        NBTTagList items = te.getTagList("Items", NBTBase.COMPOUND);
+
+        for (int j = 0; j < items.tagCount(); j++) {
+          NBTTagCompound item = items.getCompoundTagAt(j);
+          int targetMeta = getBrowser().getMeta();
+
+          if (getBrowser().getId().equals(item.getString("id")) && (targetMeta == -1 || targetMeta == item.getInteger("Damage"))) {
+            int x = te.getInteger("x");
+            int y = te.getInteger("y");
+            int z = te.getInteger("z");
+            getBrowser().addPosition(new BlockPos(x, y, z, te.getString("id")));
+          }
+        }
+      }
+    }
   }
 
   @Override
@@ -42,7 +60,7 @@ public class FinderThread extends BrowserThreadBase<Finder> {
           int x = chunkX + i % 16;
           int y = sectionY + i / 256;
           int z = chunkZ + (i / 16) % 16;
-          getBrowser().addPosition(new BlockPos(x, y, z));
+          getBrowser().addPosition(new BlockPos(x, y, z, null));
         }
       }
     }
