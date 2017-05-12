@@ -111,7 +111,7 @@ public abstract class BrowserThreadBase<T extends MapBrowserBase> extends Thread
     this.browser.notifyFinished(getId());
   }
 
-  protected void handleTileEntities(NBTTagCompound level, NBTTagList tagList) {}
+  protected void handleTileEntities(NBTTagCompound level, NBTTagList tileEntities) {}
 
   protected void handleBlocksInSection(NBTTagCompound level, NBTTagList sections, NBTTagCompound section, byte[] blocks, byte[] add, byte[] data) {}
 }

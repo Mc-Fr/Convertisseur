@@ -1,16 +1,16 @@
 package net.mcfr.finder;
 
-import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.mcfr.MapBrowserBase;
+import net.mcfr.util.BlockPos;
 
 public class Finder extends MapBrowserBase {
   public static final String VERSION = "1.0";
 
-  private final List<Point> points;
+  private final List<BlockPos> points;
   private final String id;
   private final int meta;
   private final boolean isBlock;
@@ -26,12 +26,24 @@ public class Finder extends MapBrowserBase {
       this.threads.push(new FinderThread(this));
   }
 
-  public List<Point> getPoints() {
+  public List<BlockPos> getPositions() {
     return new ArrayList<>(this.points);
   }
 
-  public synchronized void addPoint(Point point) {
+  public synchronized void addPosition(BlockPos point) {
     this.points.add(point);
+  }
+
+  public String getId() {
+    return this.id;
+  }
+
+  public int getMeta() {
+    return this.meta;
+  }
+
+  public boolean isBlock() {
+    return this.isBlock;
   }
 
   @Override

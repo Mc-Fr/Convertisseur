@@ -22,6 +22,7 @@ public abstract class MapBrowserBase {
   private boolean started;
   private long startTime;
   private boolean interrupted;
+  private boolean finished;
 
   /**
    * Crée un navigateur pour la carte donnée.
@@ -39,12 +40,15 @@ public abstract class MapBrowserBase {
     this.started = false;
     this.startTime = 0;
     this.interrupted = false;
+    this.finished = false;
   }
 
   public void start() {
     this.progress = 0;
     this.started = true;
     this.startTime = System.currentTimeMillis();
+    this.interrupted = false;
+    this.finished = false;
 
     this.threads.forEach(thread -> thread.start());
   }
@@ -61,6 +65,10 @@ public abstract class MapBrowserBase {
    */
   public String getRegionDirectory() {
     return this.regionDirectory;
+  }
+
+  public boolean isFinished() {
+    return this.finished;
   }
 
   /**
@@ -91,7 +99,8 @@ public abstract class MapBrowserBase {
   public synchronized void notifyFinished(long threadId) {
     if (this.started && !this.threads.isEmpty()) {
       this.threads.removeIf(thread -> thread.getId() == threadId);
-
+    }
+    if (this.threads.isEmpty()) {
       long rawTime = System.currentTimeMillis() - this.startTime;
       long hours = rawTime / (3600 * 1000);
       long minutes = (rawTime / (60 * 1000)) % 60;
@@ -108,6 +117,7 @@ public abstract class MapBrowserBase {
         else
           System.out.println(String.format("Terminé en %d ms.", mseconds));
       }
+      this.finished = true;
     }
   }
 

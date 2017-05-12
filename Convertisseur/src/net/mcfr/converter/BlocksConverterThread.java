@@ -31,7 +31,7 @@ class BlocksConverterThread extends BrowserThreadBase<BlocksConverter> {
   }
 
   @Override
-  protected void handleTileEntities(NBTTagCompound level, NBTTagList tagList) {
+  protected void handleTileEntities(NBTTagCompound level, NBTTagList tileEntities) {
     level.setTag("Entities", new NBTTagList());
     level.setTag("TileEntities", new NBTTagList());
     if (level.hasKey("TileTicks"))
@@ -42,8 +42,8 @@ class BlocksConverterThread extends BrowserThreadBase<BlocksConverter> {
   public void handleBlocksInSection(NBTTagCompound level, NBTTagList sections, NBTTagCompound section, byte[] blocks, byte[] add, byte[] data) {
     if (BlocksConverter.DEBUG)
       displayArrays(blocks, add, data, BlocksConverter.DEBUG_DIR, "0");
-    for (int j = 0; j < blocks.length; j++)
-      this.replacer.replace(blocks, add, data, j, new BlockId(Util.getId(blocks, add, j), Util.extractHalfByte(data, j)));
+    for (int i = 0; i < blocks.length; i++)
+      this.replacer.replace(blocks, add, data, i, new BlockId(Util.getId(blocks, add, i), Util.extractHalfByte(data, i)));
     if (BlocksConverter.DEBUG)
       displayArrays(blocks, add, data, BlocksConverter.DEBUG_DIR, "1");
   }

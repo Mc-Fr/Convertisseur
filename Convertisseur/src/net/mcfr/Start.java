@@ -21,7 +21,7 @@ public class Start {
       printHelp();
     }
     else if (args.length == 2 && args[0].equals("-f")) {
-      search(args[1]);
+      search(addSeparator(args[1]));
     }
     else if ((args.length == 3 || args.length == 4 && args[3].equals("-a")) && args[0].equals("-c")) {
       convertMap(addSeparator(args[0]), addSeparator(args[1]), args.length == 4 && args[3].equals("-a"));
@@ -38,7 +38,7 @@ public class Start {
     System.out.println(version);
     System.out.println(str);
 
-    Pattern p = Pattern.compile("(\\w+)/(-1|\\d+)");
+    Pattern p = Pattern.compile("(\\w+:\\w+)/(-1|\\d+)");
     String input = null;
 
     while (!"exit".equals(input) || "quit".equals(input)) {
@@ -62,7 +62,9 @@ public class Start {
         try {
           Finder finder = new Finder(regionDirectory, id, meta, isBlock, 4);
           finder.start();
-
+          while (!finder.isFinished());
+          System.out.println(String.format("Positions pour %s/%d :", id, meta));
+          finder.getPositions().forEach(System.out::println);
         }
         catch (IOException e) {
           System.out.println("Une erreur est survenue : " + e.getMessage());
