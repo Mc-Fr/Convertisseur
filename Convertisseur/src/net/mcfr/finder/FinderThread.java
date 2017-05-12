@@ -12,12 +12,12 @@ import net.mcfr.util.BlockPos;
 import net.mcfr.util.Util;
 
 public class FinderThread extends BrowserThreadBase<Finder> {
-  private Map<Integer, String> ids;
+  private Map<Integer, String> blocksIdsToNames;
 
   public FinderThread(Finder browser) {
     super(browser);
     try {
-      this.ids = Util.getBlocksIdsToNamesTable(getBrowser().getRegionDirectory());
+      this.blocksIdsToNames = Util.getBlocksIdsToNamesTable(getBrowser().getRegionDirectory());
     }
     catch (IOException __) {}
   }
@@ -56,7 +56,7 @@ public class FinderThread extends BrowserThreadBase<Finder> {
         BlockId id = new BlockId(Util.getId(blocks, add, i), Util.extractHalfByte(data, i));
         int targetMeta = getBrowser().getMeta();
 
-        if (getBrowser().getId().equals(this.ids.get(id.getId())) && (targetMeta == -1 || targetMeta == id.getMeta())) {
+        if (getBrowser().getId().equals(this.blocksIdsToNames.get(id.getId())) && (targetMeta == -1 || targetMeta == id.getMeta())) {
           int x = chunkX + i % 16;
           int y = sectionY + i / 256;
           int z = chunkZ + (i / 16) % 16;
