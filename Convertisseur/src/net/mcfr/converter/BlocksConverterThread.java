@@ -46,6 +46,7 @@ class BlocksConverterThread extends BrowserThreadBase<BlocksConverter> {
       this.replacer.replace(blocks, add, data, i, new BlockId(Util.getId(blocks, add, i), Util.extractHalfByte(data, i)));
     if (BlocksConverter.DEBUG)
       displayArrays(blocks, add, data, BlocksConverter.DEBUG_DIR, "1");
+    setChanged(true);
   }
 
   /**
