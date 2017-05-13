@@ -15,7 +15,7 @@ public class FinderThread extends BrowserThreadBase<Finder> {
   private Map<Integer, String> blocksIdsToNames;
 
   public FinderThread(Finder browser) {
-    super(browser);
+    super(browser, false);
     try {
       this.blocksIdsToNames = Util.getBlocksIdsToNamesTable(getBrowser().getRegionDirectory());
     }

@@ -26,7 +26,7 @@ class BlocksConverterThread extends BrowserThreadBase<BlocksConverter> {
    * @param replacer le remplaceur
    */
   public BlocksConverterThread(BlocksConverter converter, Replacer replacer) {
-    super(converter);
+    super(converter, true);
     this.replacer = replacer;
   }
 

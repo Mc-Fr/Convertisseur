@@ -71,11 +71,19 @@ public abstract class MapBrowserBase {
     return this.finished;
   }
 
+  public float getProgress() {
+    return ((float) this.progress / this.filesNumber) * 100;
+  }
+
   /**
    * Met à jour et affiche la progression de la conversion.
+   * 
+   * @param display indique si la progression doit être affichée
    */
-  public synchronized void updateProgress() {
-    System.out.format(Locale.ENGLISH, "Progression : %.2f%%\n", ((float) ++this.progress / this.filesNumber) * 100);
+  public synchronized void updateProgress(boolean display) {
+    this.progress++;
+    if (display)
+      System.out.format(Locale.ENGLISH, "Progression : %.2f%%\n", getProgress());
   }
 
   /**

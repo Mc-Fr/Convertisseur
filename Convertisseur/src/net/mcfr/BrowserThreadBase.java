@@ -19,10 +19,12 @@ public abstract class BrowserThreadBase<T extends MapBrowserBase> extends Thread
   private static final int REGION_SIZE = 32;
 
   private final T browser;
+  private boolean displayProgress;
   private boolean changed;
 
-  public BrowserThreadBase(T browser) {
+  public BrowserThreadBase(T browser, boolean displayProgress) {
     this.browser = browser;
+    this.displayProgress = displayProgress;
     this.changed = false;
   }
 
@@ -105,7 +107,7 @@ public abstract class BrowserThreadBase<T extends MapBrowserBase> extends Thread
         }
       }
 
-      this.browser.updateProgress();
+      this.browser.updateProgress(this.displayProgress);
     }
 
     this.browser.notifyFinished(getId());

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,8 +65,8 @@ public class Start {
         try {
           Finder finder = new Finder(regionDirectory, id, meta, isBlock, 4);
           finder.start();
-          while (!finder.isFinished());
-          // FIXME affichage cassé
+          while (!finder.isFinished())
+            System.out.format(Locale.ENGLISH, "Progression : %.2f%%\n", finder.getProgress());
           System.out.format("Positions trouvées pour %s/%d :\n", id, meta);
           finder.getPositions().forEach(System.out::println);
         }
